@@ -1,13 +1,15 @@
-$( document ).ready(function() {
+$(document).ready(function() {
 
   var wins = 0;
   var losses = 0;
   var qnumber = 7;
-  var qleft = 7;
-  var rtally, wtally;
+  var qleft = 8;
+  var rtally = 0;
+  var wtally = 0;
+  var timerId;
 
-  $("#wns").text(wins);
-  $("#los").text(losses);
+  $(".wins").text(`Wins: ${wins}`);
+  $(".losses").text(`Losses: ${losses}`);
 
   var questions = {
     "Q1" : {
@@ -54,31 +56,35 @@ $( document ).ready(function() {
 
   function wAnswer()
   {
-    wtally++
-    $(".answers").empty();
+    wtally++;
+    clearInterval(timerId);
+   $(".answers").empty();
    var img =  $("<img>").attr("src","Assets/images/wrong answer.gif")
-   var quote = $("<P>").text("Wrong Answer!, Hope you do better on the next one");
+   var quote = $("<P>").text("Wrong Answer!, Hope you do better on the next one, Total correct answers: " + rtally + "Total wrong answers: " + wtally);
    $(".answers").append(img);
    $(".answers").append(quote);
+   setTimeout(function(){fireQuestion();}, 3000);
   }
 
   function rAnswer()
   {
-    rtally++
+    rtally++;
+    clearInterval(timerId);
     $(".answers").empty();
    var img =  $("<img>").attr("src","Assets/images/Winner.gif")
-   var quote = $("<P>").text("Great Job, You answered correctly");
+   var quote = $("<P>").text("Great Job, You answered correctly. Total correct answers: " + rtally);
    $(".answers").append(img);
    $(".answers").append(quote);
+   setTimeout(function(){fireQuestion();}, 3000);
   }
 
   function createQuestion(question,options,answer){
 
-  
+    $(".answers").empty();
     $('#question').text(question);
     var frm = $('<form id="qForm">');
 
-    var btn = $("<button id='submitAnswer'>").text("Submit Answer");
+    var btn = $("<button id='submitAnswer'>").text("Submit");
     for(i = 0;i < options.length; i++)
     { 
       var q = $('<input type="radio" name="choice" value="' + options[i] + '">');
@@ -91,7 +97,8 @@ $( document ).ready(function() {
     $('.answers').append(frm);
     $('.answers').append(btn);
   }
-  $("#submitAnswer").on("click", function() {
+  
+  $(document).on("click", "#submitAnswer", function() {
     var radios = document.getElementsByName("choice");
     var i = 0, len = radios.length;
     var checked = false;
@@ -105,24 +112,126 @@ $( document ).ready(function() {
     } 
     // if user click submit button without selecting any option, alert box should be say "please select choice answer".
     if(!checked) {
-      alert("please select choice answer");
-      return;
+      alert("Please Select a Choice");
     }
     // Correct answer
     if(userAnswer === $("#qForm").attr("Answer")) {
-      rAnswer()
+      rAnswer();
     }
     // incorrect answer
     else {
-      wAnswer()
+      wAnswer();
     }
   });
 
-  switch(cquestion){
-    case 0:
-    createQuestion(questions.Q1.Q,questions.Q1.O,questions.Q1.A);
-    break;
+  $(document).on("click", "#rGame", function() {
+    var wins = 0;
+    var losses = 0;
+    var qnumber = 7;
+    var qleft = 8;
+    var rtally = 0;
+    var wtally = 0;
+  });
+  
+  $(document).on("click", "#sGame", function() {
+    var qnumber = 7;
+    var qleft = 8;
+    var rtally = 0;
+    var wtally = 0;
+  });
 
+  function StartTimer() {
+   var timeLeft = 30;
+   var elem = $("#countdown");
+   timerId = setInterval(countdown, 1000);
+   function countdown() {
+      if (timeLeft == 0) {
+        clearTimeout(timerId);
+       wAnswer();
+      } else {
+        elem.text(timeLeft + ' seconds remaining');
+        timeLeft--;
+      };
+    };
   }
+  function fireQuestion()
+  {
+    if(qleft != 0)
+    {
+    cquestion = qnumber - (qleft -1);
+    switch(cquestion){
+      case 0:
+      createQuestion(questions.Q1.Q,questions.Q1.O,questions.Q1.A);
+      break;
+      case 1:
+      createQuestion(questions.Q2.Q,questions.Q2.O,questions.Q2.A);
+      break;
+      case 2:
+      createQuestion(questions.Q3.Q,questions.Q3.O,questions.Q3.A);
+      break;
+      case 3:
+      createQuestion(questions.Q4.Q,questions.Q4.O,questions.Q4.A);
+      break;
+      case 4:
+      createQuestion(questions.Q5.Q,questions.Q5.O,questions.Q5.A);
+      break;
+      case 5:
+      createQuestion(questions.Q6.Q,questions.Q6.O,questions.Q6.A);
+      break;
+      case 6:
+      createQuestion(questions.Q7.Q,questions.Q7.O,questions.Q7.A);
+      break;
+      case 7:
+      createQuestion(questions.Q8.Q,questions.Q8.O,questions.Q8.A);
+      break;
+
+    };
+    StartTimer();
+    qleft--;
+    
+    
+  }
+  else{
+    if(rtally >= 6)
+    {
+      $(".answers").empty();
+      var btnA = $("<button id='rGame'>").text("Reset");
+      var btnB = $("<button id='sGame'>").text("New Game");
+      var img =  $("<img>").attr("src","Assets/images/Winner.gif")
+      var quote = $("<P>").text("Great Job, You won the game");
+      $(".answers").append(img);
+      $(".answers").append(quote);
+      $(".answers").append(btnA);
+      $(".answers").append(btnB);
+      wins++;
+      $(".wins").text(`Wins: ${wins}`);
+      $(".losses").text(`Losses: ${losses}`);
+    }
+    else
+    {
+      $(".answers").empty();
+      var btnA = $("<button id='rGame'>").text("Reset");
+      var btnB = $("<button id='sGame'>").text("New Game");
+      var img =  $("<img>").attr("src","Assets/images/loose.gif")
+      var quote = $("<P>").text("Please try harder nextime");
+      $(".answers").append(img);
+      $(".answers").append(quote);
+      $(".answers").append(btnA);
+      $(".answers").append(btnB);
+      losses++;
+      $(".wins").text(`Wins: ${wins}`);
+      $(".losses").text(`Losses: ${losses}`);
+    }
+  }
+
+
+    
+};
+
+$("#startGame").on("click", function() {
+  fireQuestion();
+});
+
+
 
 });
