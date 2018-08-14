@@ -1,0 +1,19 @@
+body{
+  background-image: url('../images/007gun-barrel1.jpg');
+}
+
+.title{
+  border-radius: 25px;
+  border: 2px;
+  border-color: solid black;
+  background-color: aqua;
+  text-align: center;
+}
+
+
+.questionboard{
+  border-radius: 25px;
+  border: 2px;
+  border-color: solid black;
+  background-color: whitesmoke;
+}
