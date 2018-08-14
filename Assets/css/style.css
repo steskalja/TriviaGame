@@ -1,5 +1,5 @@
 body{
-  background-image: url('../images/007gun-barrel1.jpg');
+  background-image: url('../images/gun_barrel.jpg');
 }
 
 .title{
@@ -16,4 +16,8 @@ body{
   border: 2px;
   border-color: solid black;
   background-color: whitesmoke;
+}
+
+button{
+  border-radius: 25px;
 }

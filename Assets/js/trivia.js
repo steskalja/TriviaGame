@@ -7,7 +7,6 @@ $(document).ready(function() {
   var rtally = 0;
   var wtally = 0;
   var timerId;
-
   $(".wins").text(`Wins: ${wins}`);
   $(".losses").text(`Losses: ${losses}`);
 
@@ -38,9 +37,9 @@ $(document).ready(function() {
       "A": "Never Say Never Again"
     },
     "Q6" : {
-      "Q": "Who was the first James Bond?",
-      "O": ["Sean Connary","Barry Nelson", "Idres Alba"],
-      "A": "Barry Nelson"
+      "Q": "Who was the first Bond Girl?",
+      "O": ["Tilly Masterson","Dink", "Honey Ryder"],
+      "A": "Honey Ryder"
     },
     "Q7" : {
       "Q": "What was the name of Ian Flemmings hide away?",
@@ -60,7 +59,7 @@ $(document).ready(function() {
     clearInterval(timerId);
    $(".answers").empty();
    var img =  $("<img>").attr("src","Assets/images/wrong answer.gif")
-   var quote = $("<P>").text("Wrong Answer!, Hope you do better on the next one, Total correct answers: " + rtally + "Total wrong answers: " + wtally);
+   var quote = $("<P>").text("Wrong Answer!, Hope you do better on the next one, Total correct answers: " + rtally + " Total wrong answers: " + wtally);
    $(".answers").append(img);
    $(".answers").append(quote);
    setTimeout(function(){fireQuestion();}, 3000);
@@ -71,8 +70,8 @@ $(document).ready(function() {
     rtally++;
     clearInterval(timerId);
     $(".answers").empty();
-   var img =  $("<img>").attr("src","Assets/images/Winner.gif")
-   var quote = $("<P>").text("Great Job, You answered correctly. Total correct answers: " + rtally);
+   var img =  $("<img>").attr("src","Assets/images/right answer.gif")
+   var quote = $("<P>").text("Great Job, You answered correctly. Total correct answers: " + rtally + " Total wrong answers: " + wtally);
    $(".answers").append(img);
    $(".answers").append(quote);
    setTimeout(function(){fireQuestion();}, 3000);
@@ -125,19 +124,21 @@ $(document).ready(function() {
   });
 
   $(document).on("click", "#rGame", function() {
-    var wins = 0;
-    var losses = 0;
-    var qnumber = 7;
-    var qleft = 8;
-    var rtally = 0;
-    var wtally = 0;
+    wins = 0;
+    losses = 0;
+    qnumber = 7;
+    qleft = 8;
+    rtally = 0;
+    wtally = 0;
+    fireQuestion();
   });
   
   $(document).on("click", "#sGame", function() {
-    var qnumber = 7;
-    var qleft = 8;
-    var rtally = 0;
-    var wtally = 0;
+    qnumber = 7;
+    qleft = 8;
+    rtally = 0;
+    wtally = 0;
+    fireQuestion();
   });
 
   function StartTimer() {
